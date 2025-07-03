@@ -44,7 +44,17 @@ def main():
         }
     ]
 
+    # Función para resetear respuestas
+    def reset_answers():
+        for idx in range(len(questions)):
+            st.session_state[f"var_{idx}"] = ""
+            st.session_state[f"central_{idx}"] = ""
+
+    if st.button("🧹 Borrar respuestas"):
+        reset_answers()
+
     score = 0
+    total_questions = len(questions) * 2  # 2 preguntas por gráfico
 
     for idx, q in enumerate(questions):
         st.subheader(q["title"])
@@ -69,24 +79,40 @@ def main():
 
         st.pyplot(fig)
 
-        # Selección de tipo de variable
-        selected_var = st.radio(f"¿Qué tipo de variable representa este gráfico?", q["options_var"], key=f"var_{idx}")
-        if selected_var == q["correct_var"]:
-            st.success("✅ Correcto en tipo de variable")
-            score += 1
-        else:
-            st.error(f"❌ Incorrecto. Respuesta correcta: {q['correct_var']}")
+        # Selectbox para tipo de variable con opción vacía inicial
+        selected_var = st.selectbox(
+            f"¿Qué tipo de variable representa este gráfico?",
+            options=[""] + q["options_var"],
+            key=f"var_{idx}"
+        )
 
-        # Selección de medida de tendencia
-        selected_central = st.radio(f"¿Qué medida de tendencia central es más adecuada aquí?", q["options_central"], key=f"central_{idx}")
-        if selected_central == q["correct_central"]:
-            st.success("✅ Correcto en tendencia central")
-            score += 1
+        if selected_var == "":
+            st.warning("⚠️ Por favor, selecciona un tipo de variable para continuar.")
         else:
-            st.error(f"❌ Incorrecto. Respuesta correcta: {q['correct_central']}")
+            if selected_var == q["correct_var"]:
+                st.success("✅ Correcto en tipo de variable")
+                score += 1
+            else:
+                st.error(f"❌ Incorrecto. Respuesta correcta: {q['correct_var']}")
+
+        # Selectbox para medida de tendencia con opción vacía inicial
+        selected_central = st.selectbox(
+            f"¿Qué medida de tendencia central es más adecuada aquí?",
+            options=[""] + q["options_central"],
+            key=f"central_{idx}"
+        )
+
+        if selected_central == "":
+            st.warning("⚠️ Por favor, selecciona una medida de tendencia central para continuar.")
+        else:
+            if selected_central == q["correct_central"]:
+                st.success("✅ Correcto en tendencia central")
+                score += 1
+            else:
+                st.error(f"❌ Incorrecto. Respuesta correcta: {q['correct_central']}")
 
     st.markdown("---")
-    total_questions = len(questions) * 2
+
     percentage = (score / total_questions) * 100
     grade = 1 + (score / total_questions) * 6
     grade = min(7, grade)
