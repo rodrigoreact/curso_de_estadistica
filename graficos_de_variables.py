@@ -3,6 +3,16 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
+
+
+def main():
+    st.header("📊 Gráficos de Variables")
+    x = np.linspace(0, 10, 100)
+    y = np.sin(x)
+    fig, ax = plt.subplots()
+    ax.plot(x, y)
+    st.pyplot(fig)
+    
 # Configuración inicial
 st.set_page_config(page_title="Estadística con Python", layout="centered")
 

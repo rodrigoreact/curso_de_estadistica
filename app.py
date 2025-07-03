@@ -1,9 +1,12 @@
 import streamlit as st
+import graficos_de_variables
+import estadistica_descriptiva
+import probabilidades
+import inferencia_estadistica
 
 st.set_page_config(page_title="Curso de Estadística", layout="wide")
-
-# Panel lateral (Menú de navegación)
 st.sidebar.title("📘 Curso de Estadística")
+
 menu = st.sidebar.radio("Selecciona una sección", [
     "Portada",
     "Gráficos de variables",
@@ -12,23 +15,18 @@ menu = st.sidebar.radio("Selecciona una sección", [
     "Inferencia"
 ])
 
-# Contenido central
 if menu == "Portada":
     st.title("Bienvenido al Curso de Estadística")
-    st.write("""
-        Este curso está diseñado para visualizar conceptos clave de estadística utilizando Python y Streamlit.
-        Selecciona una sección del menú para comenzar.
-    """)
+    st.write("Selecciona una sección del menú para comenzar.")
 
 elif menu == "Gráficos de variables":
-    # Ejecuta el contenido de otro archivo
-    exec(open("graficos_de_variables.py").read())
+    graficos_de_variables.main()
 
 elif menu == "Estadística descriptiva":
-    exec(open("estadistica_descriptiva.py").read())
+    estadistica_descriptiva.main()
 
 elif menu == "Probabilidades":
-    exec(open("probabilidades.py").read())
+    probabilidades.main()
 
 elif menu == "Inferencia":
-    exec(open("inferencia_estadistica.py").read())
+    inferencia_estadistica.main()
